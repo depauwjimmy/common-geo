@@ -1,0 +1,21 @@
+project.ext {
+    bundleImportPackages = [
+
+    ]
+    bundlePrivatepackages = [
+
+    ]
+    bundleExportPackages = [
+            'be.sailormoon.common.geo'
+    ]
+}
+
+dependencies {
+
+}
+
+bundle {
+    instruction 'Import-Package' , bundleImportPackages?.join(',')
+    instruction 'Export-Package' , bundleExportPackages?.join(',')
+    instruction 'Private-Package', bundlePrivatepackages?.join(',')
+}
