@@ -3,6 +3,18 @@ plugins {
     id "org.dm.bundle" version "0.10.0"
 }
 
+if (!hasProperty('nexusUrl')) {
+    ext.nexusUrl = ''
+}
+
+if (!hasProperty('nexusUsername')) {
+    ext.nexusUsername = ''
+}
+
+if (!hasProperty('nexusPassword')) {
+    ext.nexusPassword = ''
+}
+
 if (System.getenv("BUILD_TAG")) {
     ext.buildInfo = System.getenv("BUILD_TAG")
 } else {
@@ -17,6 +29,30 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven{
+            url "${nexusUrl}/repository/maven-public"
+            credentials {
+                username nexusUsername
+                password nexusPassword
+            }
+        }
+    }
+
+    publishing {
+        repositories {
+            maven{
+                if(project.version.endsWith('-SNAPSHOT')) {
+                    url "${nexusUrl}/repository/maven-snapshots"
+                } else {
+                    url "${nexusUrl}/repository/maven-releases"
+                }
+
+                credentials {
+                    username nexusUsername
+                    password nexusPassword
+                }
+            }
+        }
     }
 
     group = 'be.sailormoon.common'
